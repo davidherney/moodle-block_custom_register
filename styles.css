@@ -1,0 +1,17 @@
+.block_custom_register .control-msg {
+    display: block;
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #d9534f;
+}
+
+.block_custom_register .aftermessage {
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.block_custom_register .footer a {
+    margin: 10px auto;
+}
