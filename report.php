@@ -35,7 +35,7 @@ $PAGE->set_title(get_string('pluginname', 'block_custom_register'));
 
 echo $OUTPUT->header();
 
-$amount = 1;
+$amount = 50;
 $select = '';
 $params = array('instanceid' => $id);
 
