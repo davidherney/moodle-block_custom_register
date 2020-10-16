@@ -81,7 +81,8 @@ class report implements renderable, templatable {
     public function __construct($id, $records = array(), $query = '', $total = 0) {
         global $CFG;
 
-        $fields = array('relation' => 'key', 'timecreated' => 'Fecha');
+//        $fields = array('relation' => 'key', 'timecreated' => 'Fecha');
+        $fields = array('timecreated' => 'Fecha');
 
         $rows = array();
         // Load the course image.
@@ -93,7 +94,6 @@ class report implements renderable, templatable {
             $writedata = (array)$writedata;
 
             $row = new \stdClass();
-            $row->relation = $record->relation;
             $row->timecreated = userdate($record->timecreated);
 
             foreach ($customdata as $field => $one) {
