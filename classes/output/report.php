@@ -74,7 +74,7 @@ class report implements renderable, templatable {
      *
      * @param array $records A records list
      */
-    public function __construct($records = array(), $query = '') {
+    public function __construct($records = array(), $query = '', $total = 0) {
         global $CFG;
 
         $fields = array('relation' => 'key', 'timecreated' => 'Fecha');
@@ -110,6 +110,7 @@ class report implements renderable, templatable {
         $this->records = $rows;
         $this->query = $query;
         $this->fields = $fields;
+        $this->total = $total;
     }
 
     /**
@@ -125,7 +126,8 @@ class report implements renderable, templatable {
             'records' => $this->records,
             'fields' => array_values($this->fields),
             'baseurl' => $CFG->wwwroot,
-            'query' => $this->query
+            'query' => $this->query,
+            'total' => $this->total
         ];
 
 //        $PAGE->requires->js_call_amd('block_custom_register/report', 'init', array($this->instance->id));

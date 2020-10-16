@@ -65,7 +65,7 @@ $count = $DB->count_records_sql($sql, $params);
 $pagingbar = new paging_bar($count, $spage, $amount, "/blocks/custom_register/report.php?q={$query}&amp;id={$id}");
 $pagingbar->pagevar = 'spage';
 
-$renderable = new \block_custom_register\output\report($records, $query);
+$renderable = new \block_custom_register\output\report($records, $query, $count);
 $renderer = $PAGE->get_renderer('block_custom_register');
 
 echo $renderer->render($renderable);
