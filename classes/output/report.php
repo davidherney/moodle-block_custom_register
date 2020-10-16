@@ -55,15 +55,77 @@ class report implements renderable, templatable {
     public $instance;
 
     /**
+     * @var array Courses list to show.
+     */
+    private $courses = null;
+
+    /**
+     * @var array Query to filter the courses list.
+     */
+    private $query = null;
+
+    /**
+     * @var array Sort type.
+     */
+    private $sort = null;
+
+    /**
+     * Constructor.
+     *
+     * @param array $records A records list
+     */
+    public function __construct($records = array(), $query = '') {
+        global $CFG;
+
+        $fields = array('relation' => 'key', 'timecreated' => 'Fecha');
+
+        $rows = array();
+        // Load the course image.
+        foreach ($records as $record) {
+            $customdata = json_decode($record->customdata);
+            $customdata = (array)$customdata;
+
+            $writedata = json_decode($record->writedata);
+            $writedata = (array)$writedata;
+
+            $row = new \stdClass();
+            $row->relation = $record->relation;
+            $row->timecreated = userdate($record->timecreated);
+
+            foreach ($customdata as $field => $one) {
+                $fields[$field] = $field;
+                $row->$field = $one;
+            }
+
+            foreach ($writedata as $field => $one) {
+                $fields[$field] = $field;
+                $row->$field = $one;
+            }
+
+            $k = new \stdClass();
+            $k->values = array_values((array)$row);
+            $rows[] = $k;
+        }
+
+        $this->records = $rows;
+        $this->query = $query;
+        $this->fields = $fields;
+    }
+
+    /**
      * Export this data so it can be used as the context for a mustache template.
      *
      * @param \renderer_base $output
      * @return array Context variables for the template
      */
     public function export_for_template(renderer_base $output) {
-        global $OUTPUT, $PAGE;
+        global $OUTPUT, $PAGE, $CFG;
 
         $defaultvariables = [
+            'records' => $this->records,
+            'fields' => array_values($this->fields),
+            'baseurl' => $CFG->wwwroot,
+            'query' => $this->query
         ];
 
 //        $PAGE->requires->js_call_amd('block_custom_register/report', 'init', array($this->instance->id));

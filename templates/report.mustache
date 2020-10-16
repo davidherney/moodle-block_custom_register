@@ -23,5 +23,28 @@
     { blockid: string }
 }}
 
-Cuerpo del reporte
-
+<div class="custom_register-filter-box">
+    <form method="post">
+        <input type="text" name="q" value="{{query}}" />
+        <button>{{#pix}}i/search, core{{/pix}}</button>
+        <input type="hidden" value="{{sort}}" />
+    </form>
+</div>
+<table class="records generaltable">
+    <tr>
+        {{#fields}}
+            <th>
+                {{.}}
+            </th>
+        {{/fields}}
+    </tr>
+    {{#records}}
+    <tr>
+        {{#values}}
+            <td>
+                {{.}}
+            </td>
+        {{/values}}
+    </tr>
+    {{/records}}
+</table>

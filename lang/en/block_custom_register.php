@@ -28,6 +28,7 @@ $string['pluginname'] = 'Custom register';
 //Capabilities
 $string['custom_register:addinstance'] = 'Add a new Custom register block';
 $string['custom_register:myaddinstance'] = 'Add a new Custom register block to Dashboard';
+$string['custom_register:viewreport'] = 'View the register report';
 $string['privacy:metadata'] = 'The Custom register block only shows external resources and does not store any data itself.';
 
 $string['save'] = 'Save';
