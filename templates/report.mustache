@@ -25,10 +25,10 @@
 
 <h3>Total de registros: {{total}}</h3>
 <div class="custom_register-filter-box">
-    <form method="post">
+    <form method="post" action="{{baseurl}}/blocks/custom_register/report.php">
         <input type="text" name="q" value="{{query}}" />
         <button>{{#pix}}i/search, core{{/pix}}</button>
-        <input type="hidden" value="{{sort}}" />
+        <input type="hidden" name="id" value="{{id}}" />
     </form>
 </div>
 <table class="records generaltable">
