@@ -43,7 +43,7 @@ if (!empty($query)) {
     $q = trim($query);
     $q = str_replace(' ', '%', $q);
     $q = '%' . $q . '%';
-    $select = "(d.customdata LIKE :query1 OR d.relation LIKE :query2 OR j.customdata LIKE :query3)";
+    $select = "WHERE (d.customdata LIKE :query1 OR d.relation LIKE :query2 OR j.customdata LIKE :query3)";
     $params['query1'] = $q;
     $params['query2'] = $q;
     $params['query3'] = $q;
@@ -52,14 +52,14 @@ if (!empty($query)) {
 $sql = "SELECT d.id, d.relation, d.customdata, d.timecreated, j.customdata AS writedata
             FROM {block_custom_register_data} AS d
             INNER JOIN {block_custom_register_join} AS j ON j.relation = d.relation AND d.instanceid = :instanceid
-            WHERE " . $select .
+            " . $select .
             " ORDER BY d.relation ASC";
 $records = $DB->get_records_sql($sql, $params, $spage * $amount, $amount);
 
 $sql = "SELECT COUNT(1)
             FROM {block_custom_register_data} AS d
-            INNER JOIN {block_custom_register_join} AS j ON j.relation = d.relation
-            WHERE " . $select;
+            INNER JOIN {block_custom_register_join} AS j ON j.relation = d.relation AND d.instanceid = :instanceid
+            " . $select;
 $count = $DB->count_records_sql($sql, $params);
 
 $pagingbar = new paging_bar($count, $spage, $amount, "/blocks/custom_register/report.php?q={$query}&amp;id={$id}");
