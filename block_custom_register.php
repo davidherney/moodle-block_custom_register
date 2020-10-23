@@ -50,7 +50,7 @@ class block_custom_register extends block_base {
     }
 
     function get_content() {
-        global $CFG, $OUTPUT;
+        global $CFG, $OUTPUT, $COURSE;
 
         if ($this->content !== NULL) {
             return $this->content;
@@ -81,7 +81,9 @@ class block_custom_register extends block_base {
             $url = new moodle_url('/blocks/custom_register/report.php', array('id' => $this->instance->id));
 
             $this->content->footer = html_writer::tag('a', get_string('viewreport', 'block_custom_register'),
-                                                            array('href' => $url, 'class' => 'btn btn-default'));
+                                                            array('href' => $url,
+                                                                    'class' => 'btn btn-default',
+                                                                    'target' => '_blank'));
         }
 
 

@@ -54,5 +54,5 @@ $string['relationedempty'] = 'The field {$a} is required';
 $string['joinmessage'] = 'Join message';
 $string['joinmessage_help'] = 'A message when the relation is not satisfactory. Can use the {value} key.';
 $string['viewreport'] = 'View report';
-$string[''] = '';
-$string[''] = '';
+$string['filename'] = 'custom_registers';
+$string['timecreated'] = 'Time';

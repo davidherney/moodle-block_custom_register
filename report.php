@@ -15,10 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once('../../config.php');
+require_once 'locallib.php';
 
 $id = required_param('id', PARAM_INT);
 $query = optional_param('q', '', PARAM_TEXT);
 $spage = optional_param('spage', 0, PARAM_INT);
+$format = optional_param('format', '', PARAM_ALPHA);
+
+if ($format) {
+    $perpage = 0;
+}
 
 require_login();
 
@@ -26,14 +32,8 @@ $blockinstance = $DB->get_record('block_instances', array('id' => $id), '*', MUS
 $context = context_block::instance($id);
 require_capability('block/custom_register:viewreport', $context);
 
-
-$PAGE->set_context($context);
-$PAGE->set_url('/blocks/custom_register/report.php');
-$PAGE->set_pagelayout('report');
-$PAGE->set_heading(get_string('pluginname', 'block_custom_register'));
-$PAGE->set_title(get_string('pluginname', 'block_custom_register'));
-
-echo $OUTPUT->header();
+$baseurl = new moodle_url('/blocks/custom_register/report.php',
+                            array('q' => $query, 'spage' => $spage,  'id' => $id));
 
 $amount = 50;
 $select = '';
@@ -62,14 +62,80 @@ $sql = "SELECT COUNT(1)
             " . $select;
 $count = $DB->count_records_sql($sql, $params);
 
+//        $fields = array('relation' => 'key', 'timecreated' => 'Fecha');
+$fields = array('timecreated' => get_string('timecreated', 'block_custom_register'));
+
+$rows = array();
+$exportrows = array();
+
+foreach ($records as $record) {
+    $customdata = json_decode($record->customdata);
+    $customdata = (array)$customdata;
+
+    $writedata = json_decode($record->writedata);
+    $writedata = (array)$writedata;
+
+    $row = new \stdClass();
+    $row->timecreated = userdate($record->timecreated);
+
+    foreach ($customdata as $field => $one) {
+        $fields[$field] = $field;
+        $row->$field = $one;
+    }
+
+    foreach ($writedata as $field => $one) {
+        $fields[$field] = $field;
+        $row->$field = $one;
+    }
+
+    $k = new \stdClass();
+    $k->values = array_values((array)$row);
+    $rows[] = $k;
+
+    $exportrows[] = $row;
+}
+
+// Only download data.
+if ($format) {
+
+    switch ($format) {
+        case 'csv' : usersgrades_download_csv($fields, $exportrows);
+        case 'ods' : usersgrades_download_ods($fields, $exportrows);
+        case 'xls' : usersgrades_download_xls($fields, $exportrows);
+
+    }
+    die;
+}
+// End download data.
+
+$PAGE->set_context($context);
+$PAGE->set_url('/blocks/custom_register/report.php');
+$PAGE->set_pagelayout('report');
+$PAGE->set_heading(get_string('pluginname', 'block_custom_register'));
+$PAGE->set_title(get_string('pluginname', 'block_custom_register'));
+
+echo $OUTPUT->header();
+
 $pagingbar = new paging_bar($count, $spage, $amount, "/blocks/custom_register/report.php?q={$query}&amp;id={$id}");
 $pagingbar->pagevar = 'spage';
 
-$renderable = new \block_custom_register\output\report($id, $records, $query, $count);
+$renderable = new \block_custom_register\output\report($id, $rows, $fields, $query, $count);
 $renderer = $PAGE->get_renderer('block_custom_register');
 
 echo $renderer->render($renderable);
 
 echo $OUTPUT->render($pagingbar);
+
+
+// Download form.
+echo $OUTPUT->heading(get_string('download', 'admin'), 4);
+
+echo $OUTPUT->box_start();
+echo '<ul>';
+echo '    <li><a href="' . $baseurl . '&format=csv">'.get_string('downloadtext').'</a></li>';
+echo '    <li><a href="' . $baseurl . '&format=ods">'.get_string('downloadods').'</a></li>';
+echo '    <li><a href="' . $baseurl . '&format=xls">'.get_string('downloadexcel').'</a></li>';
+echo '</ul>';
+echo $OUTPUT->box_end();
 
 echo $OUTPUT->footer();
