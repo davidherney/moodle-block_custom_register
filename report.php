@@ -22,10 +22,6 @@ $query = optional_param('q', '', PARAM_TEXT);
 $spage = optional_param('spage', 0, PARAM_INT);
 $format = optional_param('format', '', PARAM_ALPHA);
 
-if ($format) {
-    $perpage = 0;
-}
-
 require_login();
 
 $blockinstance = $DB->get_record('block_instances', array('id' => $id), '*', MUST_EXIST);
@@ -38,6 +34,11 @@ $baseurl = new moodle_url('/blocks/custom_register/report.php',
 $amount = 50;
 $select = '';
 $params = array('instanceid' => $id);
+
+
+if ($format) {
+    $amount = 0;
+}
 
 if (!empty($query)) {
     $q = trim($query);
