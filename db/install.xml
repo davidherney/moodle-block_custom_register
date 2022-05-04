@@ -17,6 +17,9 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id" />
         <KEY NAME="instanceid" TYPE="foreign" FIELDS="instanceid" REFTABLE="block_instances" REFFIELDS="id"/>
       </KEYS>
+      <INDEXES>
+        <INDEX NAME="relation" UNIQUE="false" FIELDS="relation"/>
+      </INDEXES>
     </TABLE>
     <TABLE NAME="block_custom_register_join" COMMENT="To check correlation with data">
       <FIELDS>
@@ -28,6 +31,9 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" />
       </KEYS>
+      <INDEXES>
+        <INDEX NAME="relation" UNIQUE="false" FIELDS="relation"/>
+      </INDEXES>
     </TABLE>
   </TABLES>
 </XMLDB>

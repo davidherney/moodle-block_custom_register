@@ -33,5 +33,31 @@ defined('MOODLE_INTERNAL') || die();
 function xmldb_block_custom_register_upgrade($oldversion) {
     global $CFG, $DB;
 
+    $dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
+
+    if ($oldversion < 2020100604) {
+
+        // Define index (not unique) to be added.
+        $table = new xmldb_table('block_custom_register_data');
+        $index = new xmldb_index('relation', XMLDB_INDEX_NOTUNIQUE, array('relation'));
+
+        // Conditionally launch add index.
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        // Define index (not unique) to be added.
+        $table = new xmldb_table('block_custom_register_join');
+        $index = new xmldb_index('relation', XMLDB_INDEX_NOTUNIQUE, array('relation'));
+
+        // Conditionally launch add index.
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        // Main savepoint reached.
+        upgrade_block_savepoint(true, 2020100604, 'custom_register', false);
+    }
+
     return true;
 }
