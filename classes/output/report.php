@@ -78,40 +78,10 @@ class report implements renderable, templatable {
      *
      * @param array $records A records list
      */
-    public function __construct($id, $records = array(), $query = '', $total = 0) {
+    public function __construct($id, $records = array(), $fields = array(), $query = '', $total = 0) {
         global $CFG;
 
-        $fields = array('relation' => 'key', 'timecreated' => 'Fecha');
-
-        $rows = array();
-        // Load the course image.
-        foreach ($records as $record) {
-            $customdata = json_decode($record->customdata);
-            $customdata = (array)$customdata;
-
-            $writedata = json_decode($record->writedata);
-            $writedata = (array)$writedata;
-
-            $row = new \stdClass();
-            $row->relation = $record->relation;
-            $row->timecreated = userdate($record->timecreated);
-
-            foreach ($customdata as $field => $one) {
-                $fields[$field] = $field;
-                $row->$field = $one;
-            }
-
-            foreach ($writedata as $field => $one) {
-                $fields[$field] = $field;
-                $row->$field = $one;
-            }
-
-            $k = new \stdClass();
-            $k->values = array_values((array)$row);
-            $rows[] = $k;
-        }
-
-        $this->records = $rows;
+        $this->records = $records;
         $this->query = $query;
         $this->fields = $fields;
         $this->total = $total;

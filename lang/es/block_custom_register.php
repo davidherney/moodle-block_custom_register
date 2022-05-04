@@ -52,5 +52,5 @@ $string['relationedempty'] = 'El campo {$a} es requerido';
 $string['joinmessage'] = 'Mensaje de validación';
 $string['joinmessage_help'] = 'Un mensaje a mostrar cuando no se satisfaga la relación. Se puede usar en el texto la clave {value}.';
 $string['viewreport'] = 'Ver reporte';
-$string[''] = '';
-$string[''] = '';
+$string['filename'] = 'inscripciones';
+$string['timecreated'] = 'Fecha';
