@@ -9,7 +9,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="instanceid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="relation" TYPE="char" LENGTH="1023" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="relation" TYPE="char" LENGTH="511" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="customdata" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="A JSON with registered data"/>
       </FIELDS>
@@ -25,7 +25,7 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="type" TYPE="char" LENGTH="63" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="relation" TYPE="char" LENGTH="1023" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="relation" TYPE="char" LENGTH="511" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="customdata" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
