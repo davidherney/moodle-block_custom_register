@@ -31,13 +31,17 @@ require_capability('block/custom_register:viewreport', $context);
 $baseurl = new moodle_url('/blocks/custom_register/report.php',
                             array('q' => $query, 'spage' => $spage,  'id' => $id));
 
+// Extract configdata.
+$config = unserialize(base64_decode($blockinstance->configdata));
+
 $amount = 50;
 $select = 'WHERE d.instanceid = :instanceid';
 $params = array('instanceid' => $id);
 
-// Extract configdata.
-$config = unserialize(base64_decode($blockinstance->configdata));
-
+if (!empty($config->joinfield)) {
+    $select .= ' AND j.type = :type';
+    $params['type'] = $config->type;
+}
 
 if ($format) {
     $amount = 0;
