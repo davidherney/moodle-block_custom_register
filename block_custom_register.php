@@ -22,21 +22,43 @@
  * @copyright 2020 David Herney @ BambuCo
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class block_custom_register extends block_base {
 
+    /**
+     * Init method.
+     */
     function init() {
         $this->title = get_string('pluginname', 'block_custom_register');
     }
 
+    /**
+     * Return true if the block has a configuration.
+     *
+     * @return boolean
+     */
     function has_config() {
         return false;
     }
 
+    /**
+     * Which page types this block may appear on.
+     *
+     * The information returned here is processed by the
+     * {@link blocks_name_allowed_in_format()} function. Look there if you need
+     * to know exactly how this works.
+     *
+     * Default case: everything except mod and tag.
+     *
+     * @return array page-type prefix => true/false.
+     */
     function applicable_formats() {
         return array('all' => true);
     }
 
+    /**
+     * This function is called on your subclass right after an instance is loaded.
+     *
+     */
     function specialization() {
         if (isset($this->config->title)) {
             $this->title = $this->title = format_string($this->config->title, true, ['context' => $this->context]);
@@ -45,10 +67,20 @@ class block_custom_register extends block_base {
         }
     }
 
+    /**
+     * This block allow multiple instances.
+     *
+     * @return boolean
+     */
     function instance_allow_multiple() {
         return true;
     }
 
+    /**
+     * Load the block content.
+     *
+     * @return stdClass
+     */
     function get_content() {
         global $CFG, $OUTPUT, $COURSE;
 
@@ -78,12 +110,12 @@ class block_custom_register extends block_base {
 
         if (has_capability('block/custom_register:viewreport', $this->context)) {
 
-            $url = new moodle_url('/blocks/custom_register/report.php', array('id' => $this->instance->id));
+            $url = new moodle_url('/blocks/custom_register/report.php', ['id' => $this->instance->id, 'courseid' => $COURSE->id]);
 
             $this->content->footer = html_writer::tag('a', get_string('viewreport', 'block_custom_register'),
-                                                            array('href' => $url,
+                                                            ['href' => $url,
                                                                     'class' => 'btn btn-default',
-                                                                    'target' => '_blank'));
+                                                                    'target' => '_blank']);
         }
 
 
@@ -103,7 +135,7 @@ class block_custom_register extends block_base {
         $config = clone($data);
         // Move embedded files into a proper filearea and adjust HTML links to match
         $config->content = file_save_draft_area_files($data->content['itemid'], $this->context->id, 'block_custom_register',
-                                                     'content', 0, array('subdirs'=>true), $data->content['text']);
+                                                     'content', 0, ['subdirs' => true], $data->content['text']);
         $config->format = $data->content['format'];
 
         parent::instance_config_save($config, $nolongerused);
@@ -128,9 +160,9 @@ class block_custom_register extends block_base {
         if (!$fs->is_area_empty($fromcontext->id, 'block_custom_register', 'content', 0, false)) {
             $draftitemid = 0;
             file_prepare_draft_area($draftitemid, $fromcontext->id, 'block_custom_register', 'content', 0,
-                                        array('subdirs' => true));
+                                        ['subdirs' => true]);
             file_save_draft_area_files($draftitemid, $this->context->id, 'block_custom_register', 'content', 0,
-                                        array('subdirs' => true));
+                                        ['subdirs' => true]);
         }
         return true;
     }

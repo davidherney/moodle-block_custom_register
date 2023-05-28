@@ -18,25 +18,29 @@ require_once('../../config.php');
 require_once 'locallib.php';
 
 $id = required_param('id', PARAM_INT);
+$courseid = required_param('courseid', PARAM_INT);
 $query = optional_param('q', '', PARAM_TEXT);
 $spage = optional_param('spage', 0, PARAM_INT);
 $format = optional_param('format', '', PARAM_ALPHA);
 
-require_login();
+// Determine current course.
+$course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 
-$blockinstance = $DB->get_record('block_instances', array('id' => $id), '*', MUST_EXIST);
+require_login($course, false);
+
+$blockinstance = $DB->get_record('block_instances', ['id' => $id], '*', MUST_EXIST);
 $context = context_block::instance($id);
 require_capability('block/custom_register:viewreport', $context);
 
-$baseurl = new moodle_url('/blocks/custom_register/report.php',
-                            array('q' => $query, 'spage' => $spage,  'id' => $id));
+$baseurl = new moodle_url('/blocks/custom_register/report.php', ['q' => $query, 'spage' => $spage,
+                                                                'id' => $id, 'courseid' => $courseid]);
 
 // Extract configdata.
 $config = unserialize(base64_decode($blockinstance->configdata));
 
 $amount = 50;
 $select = 'WHERE d.instanceid = :instanceid';
-$params = array('instanceid' => $id);
+$params = ['instanceid' => $id];
 
 if (!empty($config->joinfield)) {
     $select .= ' AND j.type = :type';
@@ -87,11 +91,10 @@ if (!empty($config->joinfield)) {
 $records = $DB->get_records_sql($sql, $params, $spage * $amount, $amount);
 $count = $DB->count_records_sql($sqlcount, $params);
 
-//        $fields = array('relation' => 'key', 'timecreated' => 'Fecha');
-$fields = array('timecreated' => get_string('timecreated', 'block_custom_register'));
+$fields = ['timecreated' => get_string('timecreated', 'block_custom_register')];
 
-$rows = array();
-$exportrows = array();
+$rows = [];
+$exportrows = [];
 
 foreach ($records as $record) {
     $customdata = json_decode($record->customdata);
