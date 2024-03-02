@@ -96,7 +96,7 @@ class block_custom_register_external extends external_api {
                 return $res;
             }
 
-            $params = array();
+            $params = [];
             $params['type'] = $config->type;
             $params['relation'] = $record->$joinfield;
             $exists = $DB->count_records('block_custom_register_join', $params);
@@ -119,7 +119,31 @@ class block_custom_register_external extends external_api {
             $relation = $record->$joinfield;
         }
 
-        $params = array();
+        // Check if the uniqueness is required.
+        if (!empty($config->ukfield)) {
+
+            $ukfield = trim($config->ukfield);
+            $type = trim($config->type);
+
+            if (!property_exists($record, $ukfield) || empty($record->$ukfield)) {
+                $res->message = get_string('ukfieldempty', 'block_custom_register', $ukfield);
+                return $res;
+            }
+
+            $params = [];
+            $params['instance'] = $instanceid;
+            $params['ukfield'] = '%' . $ukfield . '":"' . $record->$ukfield . '"%';
+
+            $query = "SELECT COUNT(1) FROM {block_custom_register_data} WHERE instanceid = :instance AND customdata LIKE :ukfield";
+            $exists = $DB->count_records_sql($query, $params);
+
+            if ($exists > 0) {
+                $res->message = get_string('ukfieldexist', 'block_custom_register', $ukfield);
+                return $res;
+            }
+        }
+
+        $params = [];
         $params['instanceid'] = $instanceid;
         $params['userid'] = $USER ? $USER->id : null;
         $params['relation'] = $relation;

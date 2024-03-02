@@ -23,36 +23,37 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Custom register';
-
-//Capabilities
+$string['aftermessage'] = 'Message';
+$string['aftermessage_help'] = 'Message to display when information is saved';
+$string['bademail'] = 'Bad email address';
+$string['canbesaved'] = 'Can\'t save the information';
+$string['configtype'] = 'Type';
+$string['content'] = 'Content';
+$string['content_help'] = 'The HTML content with form fields. Not include the form tag.';
 $string['custom_register:addinstance'] = 'Add a new Custom register block';
 $string['custom_register:myaddinstance'] = 'Add a new Custom register block to Dashboard';
 $string['custom_register:viewreport'] = 'View the register report';
-$string['privacy:metadata'] = 'The Custom register block only shows external resources and does not store any data itself.';
-
-$string['save'] = 'Save';
 $string['customtitle'] = 'Custom block title';
-$string['newblocktitle'] = 'Custom register';
+$string['databadformat'] = 'Format data is invalid';
+$string['fieldrequired'] = 'Field required';
 $string['fields'] = 'Fields';
 $string['fields_help'] = 'A field name by line';
-$string['content'] = 'Content';
-$string['content_help'] = 'The HTML content with form fields. Not include the form tag.';
-$string['aftermessage'] = 'Message';
-$string['aftermessage_help'] = 'Message to display when information is saved';
+$string['filename'] = 'custom_registers';
 $string['instancenotexist'] = 'The block instance not exist';
-$string['databadformat'] = 'Format data is invalid';
-$string['canbesaved'] = 'Can\'t save the information';
-$string['saved'] = 'The information was saved';
-$string['bademail'] = 'Bad email address';
-$string['fieldrequired'] = 'Field required';
-$string['configtype'] = 'Type';
 $string['joinfield'] = 'Join field';
-$string['notdata'] = 'Required data not received';
-$string['notrelationed'] = 'The {$a->field}: {$a->value} is not valid';
-$string['relationedempty'] = 'The field {$a} is required';
 $string['joinmessage'] = 'Join message';
 $string['joinmessage_help'] = 'A message when the relation is not satisfactory. Can use the {value} key.';
-$string['viewreport'] = 'View report';
-$string['filename'] = 'custom_registers';
+$string['newblocktitle'] = 'Custom register';
+$string['notdata'] = 'Required data not received';
+$string['notrelationed'] = 'The {$a->field}: {$a->value} is not valid';
+$string['pluginname'] = 'Custom register';
+$string['privacy:metadata'] = 'The custom log block stores information voluntarily provided by the user.';
+$string['relationedempty'] = 'The field {$a} is required';
+$string['save'] = 'Save';
+$string['saved'] = 'The information was saved';
 $string['timecreated'] = 'Time';
+$string['ukfield'] = 'Field unique';
+$string['ukfield_help'] = 'The field name to be unique';
+$string['ukfieldempty'] = 'The field {$a} is required';
+$string['ukfieldexist'] = 'This {$a} is already registered';
+$string['viewreport'] = 'View report';

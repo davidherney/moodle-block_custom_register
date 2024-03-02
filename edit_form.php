@@ -46,6 +46,7 @@ class block_custom_register_edit_form extends block_edit_form {
         $mform->addElement('editor', 'config_content', get_string('content', 'block_custom_register'), null, $editoroptions);
         $mform->addRule('config_content', null, 'required', null, 'client');
         $mform->setType('config_content', PARAM_RAW); // XSS is prevented when printing the block contents and serving files
+        $mform->addHelpButton('config_content', 'content', 'block_custom_register');
 
         $mform->addElement('textarea', 'config_aftermessage', get_string('aftermessage', 'block_custom_register'));
         $mform->setType('config_aftermessage', PARAM_TEXT);
@@ -60,6 +61,10 @@ class block_custom_register_edit_form extends block_edit_form {
         $mform->addElement('textarea', 'config_joinmessage', get_string('joinmessage', 'block_custom_register'));
         $mform->setType('config_joinmessage', PARAM_TEXT);
         $mform->addHelpButton('config_joinmessage', 'joinmessage', 'block_custom_register');
+
+        $mform->addElement('text', 'config_ukfield', get_string('ukfield', 'block_custom_register'));
+        $mform->setType('config_ukfield', PARAM_TEXT);
+        $mform->addHelpButton('config_ukfield', 'ukfield', 'block_custom_register');
     }
 
     function set_data($defaults) {

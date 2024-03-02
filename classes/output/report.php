@@ -55,9 +55,9 @@ class report implements renderable, templatable {
     public $instance;
 
     /**
-     * @var array Courses list to show.
+     * @var array Records list to show.
      */
-    private $courses = null;
+    private $records;
 
     /**
      * @var array Query to filter the courses list.
@@ -65,20 +65,35 @@ class report implements renderable, templatable {
     private $query = null;
 
     /**
-     * @var array Sort type.
+     * @var array fields list.
      */
-    private $sort = null;
+    private $fields;
 
+    /**
+     * @var int The total records.
+     */
     private $total = 0;
 
+    /**
+     * @var int The block id.
+     */
     private $id;
+
+    /**
+     * @var int The course id.
+     */
+    private $courseid;
 
     /**
      * Constructor.
      *
-     * @param array $records A records list
+     * @param int $id The block instance id
+     * @param int $courseid The course id
+     * @param array $fields A fields list
+     * @param string $query A query to filter the records list
+     * @param int $total The total records
      */
-    public function __construct($id, $records = array(), $fields = array(), $query = '', $total = 0) {
+    public function __construct($id, $courseid, $records = [], $fields = [], $query = '', $total = 0) {
         global $CFG;
 
         $this->records = $records;
@@ -86,6 +101,8 @@ class report implements renderable, templatable {
         $this->fields = $fields;
         $this->total = $total;
         $this->id = $id;
+        $this->courseid = $courseid;
+
     }
 
     /**
@@ -95,7 +112,7 @@ class report implements renderable, templatable {
      * @return array Context variables for the template
      */
     public function export_for_template(renderer_base $output) {
-        global $OUTPUT, $PAGE, $CFG;
+        global $CFG;
 
         $defaultvariables = [
             'records' => $this->records,
@@ -103,10 +120,9 @@ class report implements renderable, templatable {
             'baseurl' => $CFG->wwwroot,
             'query' => $this->query,
             'total' => $this->total,
-            'id' => $this->id
+            'id' => $this->id,
+            'courseid' => $this->courseid,
         ];
-
-//        $PAGE->requires->js_call_amd('block_custom_register/report', 'init', array($this->instance->id));
 
         return $defaultvariables;
     }

@@ -15,12 +15,22 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template block_custom_register/main
+    @template block_custom_register/report
 
     This template renders the template content area for a resource.
 
     Example context (json):
-    { blockid: string }
+    {
+        "id": 1,
+        "courseid": 1,
+        "fields": ["id", "name", "email"],
+        "records": [
+            {
+                "id": 1,
+                "name": "John Doe",
+                "email": "
+            },
+    }
 }}
 
 <h3>Total de registros: {{total}}</h3>
@@ -30,6 +40,7 @@
         <input type="text" name="q" value="{{query}}" />
         <button>{{#pix}}i/search, core{{/pix}}</button>
         <input type="hidden" name="id" value="{{id}}" />
+        <input type="hidden" name="courseid" value="{{courseid}}" />
     </form>
 </p>
 <table class="records generaltable">

@@ -23,34 +23,36 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Inscripción personalizada';
-
-//Capabilities
-$string['custom_register:addinstance'] = 'Adicionar un nuevo bloque Inscripción personalizada';
-$string['custom_register:myaddinstance'] = 'Adicionar Inscripción personalizada al área personal';
-
-$string['save'] = 'Guardar la inscripción';
-$string['customtitle'] = 'Título personalizado';
-$string['newblocktitle'] = 'Inscripción personalizada';
-$string['fields'] = 'Campos';
-$string['fields_help'] = 'El nombre de un campo por línea';
-$string['content'] = 'Contenido';
-$string['content_help'] = 'El contenido HTML con campos de formulario. No incluír la etiqueta form.';
 $string['aftermessage'] = 'Mensaje';
 $string['aftermessage_help'] = 'Mensaje a mostrar cuando se hace la inscripción';
-$string['instancenotexist'] = 'La instancia del bloque no existe';
-$string['databadformat'] = 'El formato de los datos es inálido';
-$string['canbesaved'] = 'No se puede guardar la información';
-$string['saved'] = 'La información fue guardada correctamente';
 $string['bademail'] = 'Correo no válido';
-$string['fieldrequired'] = 'Campo obligatorio';
+$string['canbesaved'] = 'No se puede guardar la información';
 $string['configtype'] = 'Tipo';
+$string['content'] = 'Contenido';
+$string['content_help'] = 'El contenido HTML con campos de formulario. No incluír la etiqueta form.';
+$string['custom_register:addinstance'] = 'Adicionar un nuevo bloque Inscripción personalizada';
+$string['custom_register:myaddinstance'] = 'Adicionar Inscripción personalizada al área personal';
+$string['custom_register:viewreport'] = 'Ver el reporte de inscripciones';
+$string['customtitle'] = 'Título personalizado';
+$string['databadformat'] = 'El formato de los datos es inálido';
+$string['fieldrequired'] = 'Campo obligatorio';
+$string['fields'] = 'Campos';
+$string['fields_help'] = 'El nombre de un campo por línea';
+$string['filename'] = 'inscripciones';
+$string['instancenotexist'] = 'La instancia del bloque no existe';
 $string['joinfield'] = 'Campo de intersección';
-$string['notdata'] = 'Datos no recibidos';
-$string['notrelationed'] = '{$a->field}: {$a->value} no es válido';
-$string['relationedempty'] = 'El campo {$a} es requerido';
 $string['joinmessage'] = 'Mensaje de validación';
 $string['joinmessage_help'] = 'Un mensaje a mostrar cuando no se satisfaga la relación. Se puede usar en el texto la clave {value}.';
-$string['viewreport'] = 'Ver reporte';
-$string['filename'] = 'inscripciones';
+$string['newblocktitle'] = 'Inscripción personalizada';
+$string['notdata'] = 'Datos no recibidos';
+$string['notrelationed'] = '{$a->field}: {$a->value} no es válido';
+$string['pluginname'] = 'Inscripción personalizada';
+$string['relationedempty'] = 'El campo {$a} es requerido';
+$string['save'] = 'Guardar la inscripción';
+$string['saved'] = 'La información fue guardada correctamente';
 $string['timecreated'] = 'Fecha';
+$string['ukfield'] = 'Campo único';
+$string['ukfield_help'] = 'El campo que deberá ser único al registrar nuevos datos';
+$string['ukfieldempty'] = 'El campo {$a} es requerido';
+$string['ukfieldexist'] = 'Este {$a} ya se encuentra registrado';
+$string['viewreport'] = 'Ver reporte';

@@ -38,7 +38,7 @@ $baseurl = new moodle_url('/blocks/custom_register/report.php', ['q' => $query, 
 // Extract configdata.
 $config = unserialize(base64_decode($blockinstance->configdata));
 
-$amount = 50;
+$amount = 2;
 $select = 'WHERE d.instanceid = :instanceid';
 $params = ['instanceid' => $id];
 
@@ -97,10 +97,18 @@ $rows = [];
 $exportrows = [];
 
 foreach ($records as $record) {
+
+    if ($record->customdata === null) {
+        $record->customdata = '{}';
+    }
     $customdata = json_decode($record->customdata);
     $customdata = (array)$customdata;
 
-    $writedata = json_decode($record->writedata);
+    if ($record->writedata === null) {
+        $record->writedata = '{}';
+    }
+
+    $writedata = json_decode($record->writedata, true);
     $writedata = (array)$writedata;
 
     $row = new \stdClass();
@@ -137,17 +145,18 @@ if ($format) {
 // End download data.
 
 $PAGE->set_context($context);
-$PAGE->set_url('/blocks/custom_register/report.php');
+$PAGE->set_url('/blocks/custom_register/report.php', ['q' => $query, 'spage' => $spage, 'id' => $id, 'courseid' => $courseid]);
 $PAGE->set_pagelayout('report');
 $PAGE->set_heading(get_string('pluginname', 'block_custom_register'));
 $PAGE->set_title(get_string('pluginname', 'block_custom_register'));
 
 echo $OUTPUT->header();
 
-$pagingbar = new paging_bar($count, $spage, $amount, "/blocks/custom_register/report.php?q={$query}&amp;id={$id}");
+$pagingbar = new paging_bar($count, $spage, $amount,
+                            "/blocks/custom_register/report.php?q={$query}&amp;id={$id}&amp;courseid={$courseid}");
 $pagingbar->pagevar = 'spage';
 
-$renderable = new \block_custom_register\output\report($id, $rows, $fields, $query, $count);
+$renderable = new \block_custom_register\output\report($id, $courseid, $rows, $fields, $query, $count);
 $renderer = $PAGE->get_renderer('block_custom_register');
 
 echo $renderer->render($renderable);
