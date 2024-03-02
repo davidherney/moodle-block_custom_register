@@ -38,7 +38,7 @@ $baseurl = new moodle_url('/blocks/custom_register/report.php', ['q' => $query, 
 // Extract configdata.
 $config = unserialize(base64_decode($blockinstance->configdata));
 
-$amount = 2;
+$amount = 20;
 $select = 'WHERE d.instanceid = :instanceid';
 $params = ['instanceid' => $id];
 
