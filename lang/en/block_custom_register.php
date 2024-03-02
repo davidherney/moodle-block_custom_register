@@ -47,7 +47,6 @@ $string['newblocktitle'] = 'Custom register';
 $string['notdata'] = 'Required data not received';
 $string['notrelationed'] = 'The {$a->field}: {$a->value} is not valid';
 $string['pluginname'] = 'Custom register';
-$string['privacy:metadata'] = 'The custom log block stores information voluntarily provided by the user.';
 $string['relationedempty'] = 'The field {$a} is required';
 $string['save'] = 'Save';
 $string['saved'] = 'The information was saved';
