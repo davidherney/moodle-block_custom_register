@@ -81,7 +81,7 @@ if (!empty($config->joinfield)) {
     $sql = "SELECT d.id, d.relation, d.customdata, d.timecreated, NULL AS writedata
                 FROM {block_custom_register_data} AS d
                 " . $select .
-                " ORDER BY d.relation ASC";
+                " ORDER BY d.timecreated DESC";
 
     $sqlcount = "SELECT COUNT(1)
                 FROM {block_custom_register_data} AS d
