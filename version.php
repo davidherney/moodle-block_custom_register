@@ -23,6 +23,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2020100606; // The current plugin version (Date: YYYYMMDDXX)
+$plugin->version = 2020100606.01; // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires = 2019052002; // Requires this Moodle version
 $plugin->component = 'block_custom_register'; // Full name of the plugin (used for diagnostics)

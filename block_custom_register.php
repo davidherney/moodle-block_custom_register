@@ -114,7 +114,7 @@ class block_custom_register extends block_base {
 
             $this->content->footer = html_writer::tag('a', get_string('viewreport', 'block_custom_register'),
                                                             ['href' => $url,
-                                                                    'class' => 'btn btn-default',
+                                                                    'class' => 'btn btn-secondary',
                                                                     'target' => '_blank']);
         }
 

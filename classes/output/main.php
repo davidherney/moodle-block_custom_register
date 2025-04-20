@@ -73,6 +73,9 @@ class main implements renderable, templatable {
         $filteropt->noclean = true;
 
         $aftermessage = $this->instanceconfig->aftermessage;
+        if (is_array($aftermessage)) {
+            $aftermessage = format_text($aftermessage['text'], $aftermessage['format']);
+        }
 
         $content = $this->instanceconfig->content;
         // rewrite url
