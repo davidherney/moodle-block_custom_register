@@ -74,7 +74,7 @@ class main implements renderable, templatable {
 
         $aftermessage = $this->instanceconfig->aftermessage;
         if (is_array($aftermessage)) {
-            $aftermessage = format_text($aftermessage['text'], $aftermessage['format']);
+            $aftermessage = format_text($aftermessage['text'], $aftermessage['format'], $filteropt);
         }
 
         $content = $this->instanceconfig->content;

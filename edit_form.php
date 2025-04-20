@@ -48,7 +48,7 @@ class block_custom_register_edit_form extends block_edit_form {
         $mform->setType('config_content', PARAM_RAW); // XSS is prevented when printing the block contents and serving files
         $mform->addHelpButton('config_content', 'content', 'block_custom_register');
 
-        $editoroptions = array('enable_filemanagement' => false, 'context' => $this->block->context);
+        $editoroptions = array('enable_filemanagement' => false, 'noclean' => true, 'context' => $this->block->context);
         $mform->addElement('editor', 'config_aftermessage',
                             get_string('aftermessage', 'block_custom_register'), null, $editoroptions);
         $mform->setType('config_aftermessage', PARAM_RAW);
