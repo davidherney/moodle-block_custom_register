@@ -21,43 +21,121 @@
 
     Example context (json):
     {
+        "blockid": 2,
+        "candelete": true,
+        "deleteallurl": "https://example.com/blocks/custom_register/report.php?action=deleteall",
         "id": 1,
         "courseid": 1,
-        "fields": ["id", "name", "email"],
+        "fields": ["Time", "name", "email"],
+        "hasrecords": true,
+        "pagingbar": "<nav>Pagination</nav>",
+        "query": "",
         "records": [
             {
+                "deleteurl": "https://example.com/blocks/custom_register/report.php?action=delete",
                 "id": 1,
-                "name": "John Doe",
-                "email": "
-            },
+                "values": ["Monday", "John Doe", "john@example.com"]
+            }
+        ],
+        "reporturl": "https://example.com/blocks/custom_register/report.php",
+        "sesskey": "example",
+        "total": 1
     }
 }}
 
-<h3>Total de registros: {{total}}</h3>
+<div class="block_custom_register-report-header d-flex flex-wrap justify-content-between align-items-center">
+    <h3 class="mb-0">{{#str}}totalregisters, block_custom_register, {{total}}{{/str}}</h3>
+    {{#candelete}}
+        {{#hasrecords}}
+            <a class="btn btn-danger" href="{{deleteallurl}}">
+                {{#pix}}t/delete, core{{/pix}}
+                {{#str}}deleteallregisters, block_custom_register{{/str}}
+            </a>
+        {{/hasrecords}}
+    {{/candelete}}
+</div>
 
-<p class="custom_register-filter-box">
-    <form method="post" action="{{baseurl}}/blocks/custom_register/report.php">
-        <input type="text" name="q" value="{{query}}" />
-        <button>{{#pix}}i/search, core{{/pix}}</button>
+<div class="custom_register-filter-box mb-3">
+    <form class="form-inline" method="get" action="{{reporturl}}">
+        <input class="form-control mr-1" type="search" name="q" value="{{query}}"
+               aria-label="{{#str}}search{{/str}}" />
+        <button class="btn btn-secondary icon-no-margin" type="submit" aria-label="{{#str}}search{{/str}}">
+            {{#pix}}i/search, core{{/pix}}
+        </button>
         <input type="hidden" name="id" value="{{id}}" />
         <input type="hidden" name="courseid" value="{{courseid}}" />
     </form>
-</p>
+</div>
+{{#candelete}}
+<form method="post" action="{{reporturl}}" data-region="block_custom_register/bulk-form">
+    <input type="hidden" name="action" value="deleteselected" />
+    <input type="hidden" name="sesskey" value="{{sesskey}}" />
+    <input type="hidden" name="q" value="{{query}}" />
+    <input type="hidden" name="id" value="{{blockid}}" />
+    <input type="hidden" name="courseid" value="{{courseid}}" />
+{{/candelete}}
 <table class="records generaltable">
+    <thead>
     <tr>
+        {{#candelete}}
+            <th class="text-center" scope="col">
+                <input class="form-check-input position-static" type="checkbox"
+                       data-action="block_custom_register/select-all"
+                       aria-label="{{#str}}selectallregisters, block_custom_register{{/str}}" />
+            </th>
+        {{/candelete}}
         {{#fields}}
-            <th>
+            <th scope="col">
                 {{.}}
             </th>
         {{/fields}}
+        {{#candelete}}<th scope="col">{{#str}}actions{{/str}}</th>{{/candelete}}
     </tr>
+    </thead>
+    <tbody>
     {{#records}}
     <tr>
+        {{#candelete}}
+            <td class="text-center">
+                <input class="form-check-input position-static" type="checkbox" name="selectedids[]" value="{{id}}"
+                       data-action="block_custom_register/select-register"
+                       aria-label="{{#str}}selectregister, block_custom_register{{/str}}" />
+            </td>
+        {{/candelete}}
         {{#values}}
             <td>
                 {{.}}
             </td>
         {{/values}}
+        {{#candelete}}
+            <td>
+                <a class="btn btn-danger btn-sm icon-no-margin" href="{{deleteurl}}"
+                   title="{{#str}}deleteregister, block_custom_register{{/str}}"
+                   aria-label="{{#str}}deleteregister, block_custom_register{{/str}}">
+                    {{#pix}}t/delete, core{{/pix}}
+                </a>
+            </td>
+        {{/candelete}}
     </tr>
     {{/records}}
+    </tbody>
 </table>
+{{#pagingbar}}
+    {{{pagingbar}}}
+{{/pagingbar}}
+{{#candelete}}
+    {{#hasrecords}}
+        <div class="block_custom_register-report-actions d-flex flex-wrap justify-content-between align-items-center">
+            <button class="btn btn-danger" type="submit"
+                    data-action="block_custom_register/delete-selected">
+                {{#pix}}t/delete, core{{/pix}}
+                {{#str}}deleteselectedregisters, block_custom_register{{/str}}
+            </button>
+            <a class="btn btn-danger" href="{{deleteallurl}}">
+                {{#pix}}t/delete, core{{/pix}}
+                {{#str}}deleteallregisters, block_custom_register{{/str}}
+            </a>
+        </div>
+    {{/hasrecords}}
+</form>
+{{/candelete}}

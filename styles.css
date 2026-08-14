@@ -14,3 +14,37 @@
 .block_custom_register .footer a {
     margin: 10px auto;
 }
+
+.block_custom_register-report-header {
+    margin: 32px 0;
+}
+
+.block_custom_register-report-actions {
+    margin: 32px 0;
+}
+
+.block_custom_register-report-header > :first-child,
+.block_custom_register-report-actions > :first-child {
+    margin-right: 2rem;
+}
+
+[dir="rtl"] .block_custom_register-report-header > :first-child,
+[dir="rtl"] .block_custom_register-report-actions > :first-child {
+    margin-left: 2rem;
+    margin-right: 0;
+}
+
+@supports (gap: 2rem) {
+    .block_custom_register-report-header,
+    .block_custom_register-report-actions {
+        gap: 2rem;
+    }
+
+    .block_custom_register-report-header > :first-child,
+    .block_custom_register-report-actions > :first-child,
+    [dir="rtl"] .block_custom_register-report-header > :first-child,
+    [dir="rtl"] .block_custom_register-report-actions > :first-child {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
