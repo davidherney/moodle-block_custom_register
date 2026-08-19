@@ -59,15 +59,15 @@ define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', '
      * @param {object} $form
      * @returns
      */
-    function get_form_data($form){
-        var unindexed_array = $form.serializeArray();
-        var indexed_array = {};
+    function getFormData($form) {
+        var unindexedarray = $form.serializeArray();
+        var indexedarray = {};
 
-        $.map(unindexed_array, function(n){
-            indexed_array[n['name']] = n['value'];
+        $.map(unindexedarray, function(n) {
+            indexedarray[n.name] = n.value;
         });
 
-        return indexed_array;
+        return indexedarray;
     }
 
     /**
@@ -76,7 +76,7 @@ define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', '
      * @param {string} id The block id.
      * @param {string} instanceid The block instance id.
      */
-    var init = function (id, instanceid) {
+    var init = function(id, instanceid) {
         var $block = $('#' + id);
 
         loadStrings();
@@ -107,7 +107,7 @@ define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', '
             });
 
             // Validate email fields if exist.
-            var regexemail = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            var regexemail = /^([a-zA-Z0-9_.+-])+@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
             $block.find('input[type="email"]').each(function() {
                 var $control = $(this);
                 var value = $.trim($control.val());
@@ -124,7 +124,7 @@ define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', '
 
             var $form = $block.find('form');
             var $message = $block.find('.aftermessage');
-            var formdata = JSON.stringify(get_form_data($form));
+            var formdata = JSON.stringify(getFormData($form));
 
             Ajax.call([{
                 methodname: 'block_custom_register_save',
