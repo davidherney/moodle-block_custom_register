@@ -19,6 +19,11 @@
 
     This template renders the template content area for a resource.
 
+    Context variables required for this template:
+    * blockid - The block instance id.
+    * content - The HTML content to be rendered inside the block.
+    * aftermessage - The HTML content to be rendered after the form, hidden by default.
+
     Example context (json):
     {
         "blockid": "block_custom_register-1",
@@ -32,7 +37,7 @@
         {{{content}}}
         <div class="col-12">
             <div data-control="errors-box" style="text-align: center;"></div>
-            <button type="button" class="btn btn-primary btn-lg btn-block" data-action="save">{{#str}}save, block_custom_register{{/str}}</button>
+            <button type="button" class="btn btn-primary btn-lg" data-action="save">{{#str}}save, block_custom_register{{/str}}</button>
         </div>
     </form>
     <div class="aftermessage" style="display: none;">{{{aftermessage}}}</div>
