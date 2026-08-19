@@ -67,7 +67,7 @@ if ($action === 'delete' || $action === 'deleteselected' || $action === 'deletea
             'instanceid' => $id,
         ], 'id', MUST_EXIST);
         $confirmmessage = get_string('confirmdeleteregister', 'block_custom_register');
-    } elseif ($action === 'deleteselected') {
+    } else if ($action === 'deleteselected') {
         require_sesskey();
 
         if ($confirm && $selectedidslist !== '') {
@@ -84,11 +84,14 @@ if ($action === 'delete' || $action === 'deleteselected' || $action === 'deletea
             );
         }
 
-        list($insql, $inparams) = $DB->get_in_or_equal($selectedids, SQL_PARAMS_NAMED, 'selected');
+        [$insql, $inparams] = $DB->get_in_or_equal($selectedids, SQL_PARAMS_NAMED, 'selected');
         $selectionparams = ['selectedinstanceid' => $id] + $inparams;
         $validrecords = $DB->get_records_select(
             'block_custom_register_data',
-            "instanceid = :selectedinstanceid AND id {$insql}", $selectionparams, '', 'id'
+            "instanceid = :selectedinstanceid AND id {$insql}",
+            $selectionparams,
+            '',
+            'id'
         );
         $selectedids = array_keys($validrecords);
 
