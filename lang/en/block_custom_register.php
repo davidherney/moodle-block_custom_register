@@ -31,8 +31,7 @@ $string['canbesaved'] = 'Can\'t save the information';
 $string['configtype'] = 'Type';
 $string['confirmdeleteallregisters'] = 'Are you sure you want to delete all entries? This action cannot be undone.';
 $string['confirmdeleteregister'] = 'Are you sure you want to delete this entry? This action cannot be undone.';
-$string['confirmdeleteselectedregisters'] =
-    'Are you sure you want to delete the {$a} selected entries? This action cannot be undone.';
+$string['confirmdeleteselectedregisters'] = 'Are you sure you want to delete the {$a} selected entries? This action cannot be undone.';
 $string['content'] = 'Content';
 $string['content_help'] = 'The HTML content with form fields. Not include the form tag.';
 $string['custom_register:addinstance'] = 'Add a new Custom register block';

@@ -29,12 +29,9 @@ $string['allregistersdeleted'] = 'Todos los registros fueron eliminados';
 $string['bademail'] = 'Correo no válido';
 $string['canbesaved'] = 'No se puede guardar la información';
 $string['configtype'] = 'Tipo';
-$string['confirmdeleteallregisters'] =
-    '¿Está seguro de que desea eliminar todos los registros? Esta acción no se puede deshacer.';
-$string['confirmdeleteregister'] =
-    '¿Está seguro de que desea eliminar este registro? Esta acción no se puede deshacer.';
-$string['confirmdeleteselectedregisters'] =
-    '¿Está seguro de que desea eliminar los {$a} registros seleccionados? Esta acción no se puede deshacer.';
+$string['confirmdeleteallregisters'] = '¿Está seguro de que desea eliminar todos los registros? Esta acción no se puede deshacer.';
+$string['confirmdeleteregister'] = '¿Está seguro de que desea eliminar este registro? Esta acción no se puede deshacer.';
+$string['confirmdeleteselectedregisters'] = '¿Está seguro de que desea eliminar los {$a} registros seleccionados? Esta acción no se puede deshacer.';
 $string['content'] = 'Contenido';
 $string['content_help'] = 'El contenido HTML con campos de formulario. No incluír la etiqueta form.';
 $string['custom_register:addinstance'] = 'Adicionar un nuevo bloque Inscripción personalizada';
@@ -53,8 +50,7 @@ $string['filename'] = 'inscripciones';
 $string['instancenotexist'] = 'La instancia del bloque no existe';
 $string['joinfield'] = 'Campo de intersección';
 $string['joinmessage'] = 'Mensaje de validación';
-$string['joinmessage_help'] =
-    'Un mensaje a mostrar cuando no se satisfaga la relación. Se puede usar en el texto la clave {value}.';
+$string['joinmessage_help'] = 'Un mensaje a mostrar cuando no se satisfaga la relación. Se puede usar en el texto la clave {value}.';
 $string['newblocktitle'] = 'Inscripción personalizada';
 $string['noselectedregisters'] = 'Seleccione al menos un registro para eliminar';
 $string['notdata'] = 'Datos no recibidos';
