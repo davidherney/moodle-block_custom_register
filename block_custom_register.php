@@ -25,7 +25,7 @@ class block_custom_register extends block_base {
     /**
      * Init method.
      */
-    function init() {
+    public function init() {
         $this->title = get_string('pluginname', 'block_custom_register');
     }
 
@@ -34,22 +34,21 @@ class block_custom_register extends block_base {
      *
      * @return boolean
      */
-    function has_config() {
+    public function has_config() {
         return false;
     }
 
     /**
      * Which page types this block may appear on.
      *
-     * The information returned here is processed by the
-     * {@link blocks_name_allowed_in_format()} function. Look there if you need
-     * to know exactly how this works.
+     * The information returned here is processed by the blocks_name_allowed_in_format() function.
+     * Look there if you need to know exactly how this works.
      *
      * Default case: everything except mod and tag.
      *
      * @return array page-type prefix => true/false.
      */
-    function applicable_formats() {
+    public function applicable_formats() {
         return ['all' => true];
     }
 
@@ -57,7 +56,7 @@ class block_custom_register extends block_base {
      * This function is called on your subclass right after an instance is loaded.
      *
      */
-    function specialization() {
+    public function specialization() {
         if (isset($this->config->title)) {
             $this->title = $this->title = format_string($this->config->title, true, ['context' => $this->context]);
         } else {
@@ -70,7 +69,7 @@ class block_custom_register extends block_base {
      *
      * @return boolean
      */
-    function instance_allow_multiple() {
+    public function instance_allow_multiple() {
         return true;
     }
 
@@ -79,14 +78,14 @@ class block_custom_register extends block_base {
      *
      * @return stdClass
      */
-    function get_content() {
+    public function get_content() {
         global $COURSE;
 
-        if ($this->content !== NULL) {
+        if ($this->content !== null) {
             return $this->content;
         }
 
-        $this->content =  new stdClass();
+        $this->content = new stdClass();
         $this->content->text = '';
         $this->content->footer = '';
 
@@ -139,7 +138,7 @@ class block_custom_register extends block_base {
      * @param bool $nolongerused
      * @return void
      */
-    function instance_config_save($data, $nolongerused = false) {
+    public function instance_config_save($data, $nolongerused = false) {
         $config = clone($data);
 
         // Move embedded files into a proper filearea and adjust HTML links to match.
@@ -162,7 +161,7 @@ class block_custom_register extends block_base {
      *
      * @return boolean
      */
-    function instance_delete() {
+    public function instance_delete() {
         $fs = get_file_storage();
         $fs->delete_area_files($this->context->id, 'block_custom_register');
         return true;

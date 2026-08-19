@@ -29,6 +29,11 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class block_custom_register_edit_form extends block_edit_form {
+    /**
+     * This function is called when the form is being displayed to add elements to the form.
+     *
+     * @param MoodleQuickForm $mform The form being displayed.
+     */
     protected function specific_definition($mform) {
         global $CFG;
 
@@ -45,12 +50,17 @@ class block_custom_register_edit_form extends block_edit_form {
         $editoroptions = ['maxfiles' => EDITOR_UNLIMITED_FILES, 'noclean' => true, 'context' => $this->block->context];
         $mform->addElement('editor', 'config_content', get_string('content', 'block_custom_register'), null, $editoroptions);
         $mform->addRule('config_content', null, 'required', null, 'client');
-        $mform->setType('config_content', PARAM_RAW); // XSS is prevented when printing the block contents and serving files
+        $mform->setType('config_content', PARAM_RAW); // XSS is prevented when printing the block contents and serving files.
         $mform->addHelpButton('config_content', 'content', 'block_custom_register');
 
         $editoroptions = ['enable_filemanagement' => false, 'noclean' => true, 'context' => $this->block->context];
-        $mform->addElement('editor', 'config_aftermessage',
-                            get_string('aftermessage', 'block_custom_register'), null, $editoroptions);
+        $mform->addElement(
+            'editor',
+            'config_aftermessage',
+            get_string('aftermessage', 'block_custom_register'),
+            null,
+            $editoroptions
+        );
         $mform->setType('config_aftermessage', PARAM_RAW);
         $mform->addHelpButton('config_aftermessage', 'aftermessage', 'block_custom_register');
 
@@ -75,25 +85,25 @@ class block_custom_register_edit_form extends block_edit_form {
      * @param stdClass $defaults The default values for the form fields.
      * @return void
      */
-    function set_data($defaults) {
+    public function set_data($defaults) {
         if (!empty($this->block->config) && is_object($this->block->config)) {
             $text = $this->block->config->content;
-            $draftid_editor = file_get_submitted_draft_itemid('config_content');
+            $draftideditor = file_get_submitted_draft_itemid('config_content');
             if (empty($text)) {
                 $currenttext = '';
             } else {
                 $currenttext = $text;
             }
             $defaults->config_content['text'] = file_prepare_draft_area(
-                $draftid_editor,
+                $draftideditor,
                 $this->block->context->id,
                 'block_custom_register',
                 'content',
                 0,
-                ['subdirs'=>true],
+                ['subdirs' => true],
                 $currenttext
             );
-            $defaults->config_content['itemid'] = $draftid_editor;
+            $defaults->config_content['itemid'] = $draftideditor;
             $defaults->config_content['format'] = $this->block->config->format;
         } else {
             $text = '';

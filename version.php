@@ -1,11 +1,12 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
 //
-// It is free software: you can redistribute it and/or modify
+// Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// It is distributed in the hope that it will be useful,
+// Moodle is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
@@ -23,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2020100603; // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires = 2019052002; // Requires this Moodle version
-$plugin->component = 'block_custom_register'; // Full name of the plugin (used for diagnostics)
+$plugin->version = 2020100607;
+$plugin->requires = 2019052002;
+$plugin->component = 'block_custom_register';
 $plugin->supported = [405, 501];
 $plugin->maturity  = MATURITY_STABLE;

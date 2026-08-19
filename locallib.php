@@ -21,10 +21,18 @@
  * @copyright 2020 David Herney @ BambuCo
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+/**
+ * This function is used to download the data in ODS format.
+ *
+ * @param array $fields The fields to be included in the ODS.
+ * @param array $data The data to be included in the ODS.
+ * @return void
+ */
 function usersgrades_download_ods($fields, $data) {
     global $CFG, $SESSION, $DB;
 
-    require_once $CFG->libdir . '/odslib.class.php';
+    require_once($CFG->libdir . '/odslib.class.php');
 
     $filename = clean_filename(get_string('filename', 'block_custom_register') . date('YmdHis') . '.ods');
 
@@ -58,10 +66,17 @@ function usersgrades_download_ods($fields, $data) {
     die;
 }
 
+/**
+ * This function is used to download the data in XLS format.
+ *
+ * @param array $fields The fields to be included in the XLS.
+ * @param array $data The data to be included in the XLS.
+ * @return void
+ */
 function usersgrades_download_xls($fields, $data) {
     global $CFG, $SESSION, $DB;
 
-    require_once $CFG->libdir . '/excellib.class.php';
+    require_once($CFG->libdir . '/excellib.class.php');
 
     $filename = clean_filename(get_string('filename', 'block_custom_register') . date('YmdHis') . '.xls');
 
@@ -95,10 +110,17 @@ function usersgrades_download_xls($fields, $data) {
     die;
 }
 
+/**
+ * This function is used to download the data in CSV format.
+ *
+ * @param array $fields The fields to be included in the CSV.
+ * @param array $data The data to be included in the CSV.
+ * @return void
+ */
 function usersgrades_download_csv($fields, $data) {
     global $CFG, $SESSION, $DB;
 
-    require_once $CFG->libdir . '/csvlib.class.php';
+    require_once($CFG->libdir . '/csvlib.class.php');
 
     $filename = clean_filename(get_string('filename', 'block_custom_register'));
 

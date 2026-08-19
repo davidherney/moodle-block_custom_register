@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -18,10 +17,12 @@
 /**
  * External functions and service definitions.
  *
- * @package   block_custom_register
- * @copyright 2020 David Herney @ BambuCo
+ * @package    block_custom_register
+ * @copyright  2020 David Herney @ BambuCo
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
 
 $functions = [
     'block_custom_register_save' => [

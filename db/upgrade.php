@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * This file keeps track of upgrades to the block
  *
@@ -36,7 +35,7 @@ function xmldb_block_custom_register_upgrade($oldversion) {
     if ($oldversion < 2020100604) {
         // Define index (not unique) to be added.
         $table = new xmldb_table('block_custom_register_data');
-        $index = new xmldb_index('relation', XMLDB_INDEX_NOTUNIQUE, array('relation'));
+        $index = new xmldb_index('relation', XMLDB_INDEX_NOTUNIQUE, ['relation']);
 
         // Conditionally launch add index.
         if (!$dbman->index_exists($table, $index)) {
@@ -45,7 +44,7 @@ function xmldb_block_custom_register_upgrade($oldversion) {
 
         // Define index (not unique) to be added.
         $table = new xmldb_table('block_custom_register_join');
-        $index = new xmldb_index('relation', XMLDB_INDEX_NOTUNIQUE, array('relation'));
+        $index = new xmldb_index('relation', XMLDB_INDEX_NOTUNIQUE, ['relation']);
 
         // Conditionally launch add index.
         if (!$dbman->index_exists($table, $index)) {

@@ -21,8 +21,38 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', 'core/ajax'],
-        function($, ModalFactory, Templates, Notification, Ajax) {
+define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', 'core/ajax', 'core/str', 'core/log'],
+        function($, ModalFactory, Templates, Notification, Ajax, Str, Log) {
+
+
+    // Load strings.
+    var strings = [
+        {key: 'fieldrequired', component: 'block_custom_register'},
+        {key: 'bademail', component: 'block_custom_register'},
+    ];
+    var s = [];
+
+    /**
+     * Load strings from server.
+     */
+    function loadStrings() {
+        strings.forEach(one => {
+            s[one.key] = one.key;
+        });
+
+        Str.get_strings(strings).then(function(results) {
+            var pos = 0;
+            strings.forEach(one => {
+                s[one.key] = results[pos];
+                pos++;
+            });
+            return true;
+        }).fail(function(e) {
+            Log.debug('Error loading strings');
+            Log.debug(e);
+        });
+    }
+    // End of Load strings.
 
     /**
      *
@@ -49,6 +79,8 @@ define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', '
     var init = function (id, instanceid) {
         var $block = $('#' + id);
 
+        loadStrings();
+
         $block.find('input').each(function() {
             var $control = $(this);
             $control.wrap('<span class="control-wrap"></span>');
@@ -69,7 +101,7 @@ define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', '
                 var value = $.trim($control.val());
 
                 if (!value) {
-                    $control.parent().find('.control-msg').text(M.str.block_custom_register.fieldrequired);
+                    $control.parent().find('.control-msg').text(s.fieldrequired);
                     valid = false;
                 }
             });
@@ -81,7 +113,7 @@ define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', '
                 var value = $.trim($control.val());
 
                 if (value && !regexemail.test(value)) {
-                    $control.parent().find('.control-msg').text(M.str.block_custom_register.bademail);
+                    $control.parent().find('.control-msg').text(s.bademail);
                     valid = false;
                 }
             });
@@ -96,8 +128,8 @@ define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', '
 
             Ajax.call([{
                 methodname: 'block_custom_register_save',
-                args: { 'instanceid': parseInt(instanceid), 'formdata': formdata },
-                done: function (data) {
+                args: {'instanceid': parseInt(instanceid), 'formdata': formdata},
+                done: function(data) {
                     if (data.success) {
                         $form.empty();
                         if ($message.text() == '') {
@@ -108,7 +140,7 @@ define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', '
                         Notification.alert('', data.message);
                     }
                 },
-                fail: function (e) {
+                fail: function(e) {
                     Notification.exception(e);
                 }
             }]);

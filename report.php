@@ -23,7 +23,7 @@
  */
 
 require_once('../../config.php');
-require_once 'locallib.php';
+require_once('locallib.php');
 
 $id = required_param('id', PARAM_INT);
 $courseid = required_param('courseid', PARAM_INT);
@@ -112,7 +112,7 @@ if ($action === 'delete' || $action === 'deleteselected' || $action === 'deletea
         if ($action === 'delete') {
             $DB->delete_records('block_custom_register_data', ['id' => $record->id, 'instanceid' => $id]);
             $message = get_string('registerdeleted', 'block_custom_register');
-        } elseif ($action === 'deleteselected') {
+        } else if ($action === 'deleteselected') {
             [$insql, $inparams] = $DB->get_in_or_equal($selectedids, SQL_PARAMS_NAMED, 'selecteddelete');
             $deleteparams = ['selectedinstanceid' => $id] + $inparams;
             $DB->delete_records_select(
@@ -187,23 +187,19 @@ if (!empty($query)) {
 
 if (!empty($config->joinfield)) {
     $sql = "SELECT d.id, d.relation, d.customdata, d.timecreated, j.customdata AS writedata
-                FROM {block_custom_register_data} AS d
-                INNER JOIN {block_custom_register_join} AS j ON j.relation = d.relation " . $select .
+                FROM {block_custom_register_data} d
+                INNER JOIN {block_custom_register_join} j ON j.relation = d.relation " . $select .
                 " ORDER BY d.relation ASC";
 
     $sqlcount = "SELECT COUNT(1)
-                FROM {block_custom_register_data} AS d
-                INNER JOIN {block_custom_register_join} AS j ON j.relation = d.relation " . $select;
+                FROM {block_custom_register_data} d
+                INNER JOIN {block_custom_register_join} j ON j.relation = d.relation " . $select;
 } else {
+    $sql = "SELECT d.id, d.relation, d.customdata, d.timecreated, NULL AS writedata FROM {block_custom_register_data} d " .
+        $select .
+        " ORDER BY d.timecreated DESC";
 
-    $sql = "SELECT d.id, d.relation, d.customdata, d.timecreated, NULL AS writedata
-                FROM {block_custom_register_data} AS d
-                " . $select .
-                " ORDER BY d.timecreated DESC";
-
-    $sqlcount = "SELECT COUNT(1)
-                FROM {block_custom_register_data} AS d
-                " . $select;
+    $sqlcount = "SELECT COUNT(1) FROM {block_custom_register_data} d " . $select;
 }
 
 $records = $DB->get_records_sql($sql, $params, $spage * $amount, $amount);
@@ -260,10 +256,15 @@ foreach ($records as $record) {
 // Only download data.
 if ($format) {
     switch ($format) {
-        case 'csv' : usersgrades_download_csv($fields, $exportrows);
-        case 'ods' : usersgrades_download_ods($fields, $exportrows);
-        case 'xls' : usersgrades_download_xls($fields, $exportrows);
-
+        case 'ods':
+            usersgrades_download_ods($fields, $exportrows);
+            break;
+        case 'xls':
+            usersgrades_download_xls($fields, $exportrows);
+            break;
+        default:
+            usersgrades_download_csv($fields, $exportrows);
+            break;
     }
     die;
 }
@@ -307,9 +308,9 @@ echo $OUTPUT->heading(get_string('download', 'admin'), 4);
 
 echo $OUTPUT->box_start();
 echo '<ul>';
-echo '    <li><a href="' . $baseurl . '&format=csv">'.get_string('downloadtext').'</a></li>';
-echo '    <li><a href="' . $baseurl . '&format=ods">'.get_string('downloadods').'</a></li>';
-echo '    <li><a href="' . $baseurl . '&format=xls">'.get_string('downloadexcel').'</a></li>';
+echo '    <li><a href="' . $baseurl . '&format=csv">' . get_string('downloadtext') . '</a></li>';
+echo '    <li><a href="' . $baseurl . '&format=ods">' . get_string('downloadods') . '</a></li>';
+echo '    <li><a href="' . $baseurl . '&format=xls">' . get_string('downloadexcel') . '</a></li>';
 echo '</ul>';
 echo $OUTPUT->box_end();
 
