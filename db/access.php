@@ -61,5 +61,18 @@ $capabilities = array(
         ),
 
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
+    ),
+
+    'block/custom_register:deleteregisters' => array(
+        'riskbitmask' => RISK_DATALOSS | RISK_PERSONAL,
+
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_BLOCK,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ),
+
+        'clonepermissionsfrom' => 'moodle/site:manageblocks'
     )
 );

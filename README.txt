@@ -2,7 +2,7 @@ BLOCK Custom register
 ============================
 A moodle block to save register information with custom forms.
 
-Package tested in: moodle 4.1
+Package tested in: moodle 4.5
 
 QUICK INSTALL
 ==============

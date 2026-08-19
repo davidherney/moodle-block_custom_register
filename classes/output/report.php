@@ -60,7 +60,7 @@ class report implements renderable, templatable {
     private $records;
 
     /**
-     * @var array Query to filter the courses list.
+     * @var string Query used to filter the records list.
      */
     private $query = null;
 
@@ -85,23 +85,37 @@ class report implements renderable, templatable {
     private $courseid;
 
     /**
+     * @var bool Whether the current user can delete records.
+     */
+    private $candelete;
+
+    /**
+     * @var string Rendered paging bar HTML.
+     */
+    private $pagingbar;
+
+    /**
      * Constructor.
      *
      * @param int $id The block instance id
      * @param int $courseid The course id
+     * @param array $records Records to display
      * @param array $fields A fields list
      * @param string $query A query to filter the records list
      * @param int $total The total records
+     * @param bool $candelete Whether the current user can delete records
+     * @param string $pagingbar Rendered paging bar HTML
      */
-    public function __construct($id, $courseid, $records = [], $fields = [], $query = '', $total = 0) {
-        global $CFG;
-
+    public function __construct($id, $courseid, $records = [], $fields = [], $query = '', $total = 0,
+                                $candelete = false, $pagingbar = '') {
         $this->records = $records;
         $this->query = $query;
         $this->fields = $fields;
         $this->total = $total;
         $this->id = $id;
         $this->courseid = $courseid;
+        $this->candelete = $candelete;
+        $this->pagingbar = $pagingbar;
 
     }
 
@@ -112,16 +126,25 @@ class report implements renderable, templatable {
      * @return array Context variables for the template
      */
     public function export_for_template(renderer_base $output) {
-        global $CFG;
-
         $defaultvariables = [
             'records' => $this->records,
             'fields' => array_values($this->fields),
-            'baseurl' => $CFG->wwwroot,
+            'reporturl' => (new \moodle_url('/blocks/custom_register/report.php'))->out(false),
+            'deleteallurl' => (new \moodle_url('/blocks/custom_register/report.php', [
+                'action' => 'deleteall',
+                'q' => $this->query,
+                'id' => $this->id,
+                'courseid' => $this->courseid,
+            ]))->out(false),
             'query' => $this->query,
             'total' => $this->total,
             'id' => $this->id,
+            'blockid' => $this->id,
             'courseid' => $this->courseid,
+            'candelete' => $this->candelete,
+            'hasrecords' => $this->total > 0,
+            'pagingbar' => $this->pagingbar,
+            'sesskey' => sesskey(),
         ];
 
         return $defaultvariables;

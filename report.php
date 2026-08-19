@@ -22,6 +22,11 @@ $courseid = required_param('courseid', PARAM_INT);
 $query = optional_param('q', '', PARAM_TEXT);
 $spage = optional_param('spage', 0, PARAM_INT);
 $format = optional_param('format', '', PARAM_ALPHA);
+$action = optional_param('action', '', PARAM_ALPHA);
+$recordid = optional_param('recordid', 0, PARAM_INT);
+$confirm = optional_param('confirm', 0, PARAM_BOOL);
+$selectedids = optional_param_array('selectedids', [], PARAM_INT);
+$selectedidslist = optional_param('selectedidslist', '', PARAM_SEQUENCE);
 
 // Determine current course.
 $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
@@ -34,6 +39,96 @@ require_capability('block/custom_register:viewreport', $context);
 
 $baseurl = new moodle_url('/blocks/custom_register/report.php', ['q' => $query, 'spage' => $spage,
                                                                 'id' => $id, 'courseid' => $courseid]);
+
+// Delete one, several, or every record belonging to this block instance.
+if ($action === 'delete' || $action === 'deleteselected' || $action === 'deleteall') {
+    require_capability('block/custom_register:deleteregisters', $context);
+
+    $returnurl = new moodle_url('/blocks/custom_register/report.php', [
+        'q' => $query,
+        'spage' => $spage,
+        'id' => $id,
+        'courseid' => $courseid,
+    ]);
+
+    if ($action === 'delete') {
+        $record = $DB->get_record('block_custom_register_data', [
+            'id' => $recordid,
+            'instanceid' => $id,
+        ], 'id', MUST_EXIST);
+        $confirmmessage = get_string('confirmdeleteregister', 'block_custom_register');
+    } elseif ($action === 'deleteselected') {
+        require_sesskey();
+
+        if ($confirm && $selectedidslist !== '') {
+            $selectedids = array_map('intval', explode(',', $selectedidslist));
+        }
+        $selectedids = array_values(array_unique(array_filter($selectedids)));
+
+        if (empty($selectedids)) {
+            redirect($returnurl, get_string('noselectedregisters', 'block_custom_register'), null,
+                \core\output\notification::NOTIFY_WARNING);
+        }
+
+        list($insql, $inparams) = $DB->get_in_or_equal($selectedids, SQL_PARAMS_NAMED, 'selected');
+        $selectionparams = ['selectedinstanceid' => $id] + $inparams;
+        $validrecords = $DB->get_records_select('block_custom_register_data',
+            "instanceid = :selectedinstanceid AND id {$insql}", $selectionparams, '', 'id');
+        $selectedids = array_keys($validrecords);
+
+        if (empty($selectedids)) {
+            redirect($returnurl, get_string('noselectedregisters', 'block_custom_register'), null,
+                \core\output\notification::NOTIFY_WARNING);
+        }
+
+        $confirmmessage = get_string('confirmdeleteselectedregisters', 'block_custom_register', count($selectedids));
+    } else {
+        $confirmmessage = get_string('confirmdeleteallregisters', 'block_custom_register');
+    }
+
+    if ($confirm) {
+        require_sesskey();
+
+        if ($action === 'delete') {
+            $DB->delete_records('block_custom_register_data', ['id' => $record->id, 'instanceid' => $id]);
+            $message = get_string('registerdeleted', 'block_custom_register');
+        } elseif ($action === 'deleteselected') {
+            list($insql, $inparams) = $DB->get_in_or_equal($selectedids, SQL_PARAMS_NAMED, 'selecteddelete');
+            $deleteparams = ['selectedinstanceid' => $id] + $inparams;
+            $DB->delete_records_select('block_custom_register_data',
+                "instanceid = :selectedinstanceid AND id {$insql}", $deleteparams);
+            $message = get_string('selectedregistersdeleted', 'block_custom_register', count($selectedids));
+        } else {
+            $DB->delete_records('block_custom_register_data', ['instanceid' => $id]);
+            $message = get_string('allregistersdeleted', 'block_custom_register');
+        }
+
+        redirect($returnurl, $message, null, \core\output\notification::NOTIFY_SUCCESS);
+    }
+
+    $confirmurl = new moodle_url('/blocks/custom_register/report.php', [
+        'action' => $action,
+        'recordid' => $recordid,
+        'selectedidslist' => implode(',', $selectedids),
+        'confirm' => 1,
+        'sesskey' => sesskey(),
+        'q' => $query,
+        'spage' => $spage,
+        'id' => $id,
+        'courseid' => $courseid,
+    ]);
+
+    $PAGE->set_context($context);
+    $PAGE->set_url($returnurl);
+    $PAGE->set_pagelayout('report');
+    $PAGE->set_heading(get_string('pluginname', 'block_custom_register'));
+    $PAGE->set_title(get_string('pluginname', 'block_custom_register'));
+
+    echo $OUTPUT->header();
+    echo $OUTPUT->confirm($confirmmessage, $confirmurl, $returnurl);
+    echo $OUTPUT->footer();
+    exit;
+}
 
 // Extract configdata.
 $config = unserialize(base64_decode($blockinstance->configdata));
@@ -125,6 +220,15 @@ foreach ($records as $record) {
     }
 
     $k = new \stdClass();
+    $k->id = $record->id;
+    $k->deleteurl = (new moodle_url('/blocks/custom_register/report.php', [
+        'action' => 'delete',
+        'recordid' => $record->id,
+        'q' => $query,
+        'spage' => $spage,
+        'id' => $id,
+        'courseid' => $courseid,
+    ]))->out(false);
     $k->values = array_values((array)$row);
     $rows[] = $k;
 
@@ -149,20 +253,33 @@ $PAGE->set_url('/blocks/custom_register/report.php', ['q' => $query, 'spage' => 
 $PAGE->set_pagelayout('report');
 $PAGE->set_heading(get_string('pluginname', 'block_custom_register'));
 $PAGE->set_title(get_string('pluginname', 'block_custom_register'));
+$PAGE->requires->js_call_amd('block_custom_register/report', 'init');
 
 echo $OUTPUT->header();
 
-$pagingbar = new paging_bar($count, $spage, $amount,
-                            "/blocks/custom_register/report.php?q={$query}&amp;id={$id}&amp;courseid={$courseid}");
+$pagingurl = new moodle_url('/blocks/custom_register/report.php', [
+    'q' => $query,
+    'id' => $id,
+    'courseid' => $courseid,
+]);
+$pagingbar = new paging_bar($count, $spage, $amount, $pagingurl);
 $pagingbar->pagevar = 'spage';
 
-$renderable = new \block_custom_register\output\report($id, $courseid, $rows, $fields, $query, $count);
+$candelete = has_capability('block/custom_register:deleteregisters', $context);
+$pagingbarhtml = $OUTPUT->render($pagingbar);
+$renderable = new \block_custom_register\output\report(
+    $id,
+    $courseid,
+    $rows,
+    $fields,
+    $query,
+    $count,
+    $candelete,
+    $pagingbarhtml
+);
 $renderer = $PAGE->get_renderer('block_custom_register');
 
 echo $renderer->render($renderable);
-
-echo $OUTPUT->render($pagingbar);
-
 
 // Download form.
 echo $OUTPUT->heading(get_string('download', 'admin'), 4);
