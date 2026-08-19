@@ -42,13 +42,13 @@ class block_custom_register_edit_form extends block_edit_form {
         $mform->setType('config_fields', PARAM_TEXT);
         $mform->addHelpButton('config_fields', 'fields', 'block_custom_register');
 
-        $editoroptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'noclean' => true, 'context' => $this->block->context);
+        $editoroptions = ['maxfiles' => EDITOR_UNLIMITED_FILES, 'noclean' => true, 'context' => $this->block->context];
         $mform->addElement('editor', 'config_content', get_string('content', 'block_custom_register'), null, $editoroptions);
         $mform->addRule('config_content', null, 'required', null, 'client');
         $mform->setType('config_content', PARAM_RAW); // XSS is prevented when printing the block contents and serving files
         $mform->addHelpButton('config_content', 'content', 'block_custom_register');
 
-        $editoroptions = array('enable_filemanagement' => false, 'noclean' => true, 'context' => $this->block->context);
+        $editoroptions = ['enable_filemanagement' => false, 'noclean' => true, 'context' => $this->block->context];
         $mform->addElement('editor', 'config_aftermessage',
                             get_string('aftermessage', 'block_custom_register'), null, $editoroptions);
         $mform->setType('config_aftermessage', PARAM_RAW);
@@ -69,6 +69,12 @@ class block_custom_register_edit_form extends block_edit_form {
         $mform->addHelpButton('config_ukfield', 'ukfield', 'block_custom_register');
     }
 
+    /**
+     * This function is called when the form is being displayed to set the default values.
+     *
+     * @param stdClass $defaults The default values for the form fields.
+     * @return void
+     */
     function set_data($defaults) {
         if (!empty($this->block->config) && is_object($this->block->config)) {
             $text = $this->block->config->content;
@@ -78,7 +84,15 @@ class block_custom_register_edit_form extends block_edit_form {
             } else {
                 $currenttext = $text;
             }
-            $defaults->config_content['text'] = file_prepare_draft_area($draftid_editor, $this->block->context->id, 'block_html', 'content', 0, array('subdirs'=>true), $currenttext);
+            $defaults->config_content['text'] = file_prepare_draft_area(
+                $draftid_editor,
+                $this->block->context->id,
+                'block_custom_register',
+                'content',
+                0,
+                ['subdirs'=>true],
+                $currenttext
+            );
             $defaults->config_content['itemid'] = $draftid_editor;
             $defaults->config_content['format'] = $this->block->config->format;
         } else {
@@ -86,24 +100,23 @@ class block_custom_register_edit_form extends block_edit_form {
         }
 
         if (!$this->block->user_can_edit() && !empty($this->block->config->title)) {
-            // If a title has been set but the user cannot edit it format it nicely
+            // If a title has been set but the user cannot edit it format it nicely.
             $title = $this->block->config->title;
             $defaults->config_title = format_string($title, true, $this->page->context);
             // Remove the title from the config so that parent::set_data doesn't set it.
             unset($this->block->config->title);
         }
 
-        // have to delete text here, otherwise parent::set_data will empty content
-        // of editor
+        // Have to delete text here, otherwise parent::set_data will empty content of editor.
         unset($this->block->config->content);
         parent::set_data($defaults);
-        // restore $text
+        // Restore $text.
         if (!isset($this->block->config)) {
             $this->block->config = new stdClass();
         }
         $this->block->config->content = $text;
         if (isset($title)) {
-            // Reset the preserved title
+            // Reset the preserved title.
             $this->block->config->title = $title;
         }
     }

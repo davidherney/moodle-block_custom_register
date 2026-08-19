@@ -14,6 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * Report page for custom_register block.
+ *
+ * @package    block_custom_register
+ * @copyright  2020 David Herney @ BambuCo
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 require_once('../../config.php');
 require_once 'locallib.php';
 
@@ -37,8 +45,10 @@ $blockinstance = $DB->get_record('block_instances', ['id' => $id], '*', MUST_EXI
 $context = context_block::instance($id);
 require_capability('block/custom_register:viewreport', $context);
 
-$baseurl = new moodle_url('/blocks/custom_register/report.php', ['q' => $query, 'spage' => $spage,
-                                                                'id' => $id, 'courseid' => $courseid]);
+$baseurl = new moodle_url(
+    '/blocks/custom_register/report.php',
+    ['q' => $query, 'spage' => $spage, 'id' => $id, 'courseid' => $courseid]
+);
 
 // Delete one, several, or every record belonging to this block instance.
 if ($action === 'delete' || $action === 'deleteselected' || $action === 'deleteall') {
@@ -66,19 +76,29 @@ if ($action === 'delete' || $action === 'deleteselected' || $action === 'deletea
         $selectedids = array_values(array_unique(array_filter($selectedids)));
 
         if (empty($selectedids)) {
-            redirect($returnurl, get_string('noselectedregisters', 'block_custom_register'), null,
-                \core\output\notification::NOTIFY_WARNING);
+            redirect(
+                $returnurl,
+                get_string('noselectedregisters', 'block_custom_register'),
+                null,
+                \core\output\notification::NOTIFY_WARNING
+            );
         }
 
         list($insql, $inparams) = $DB->get_in_or_equal($selectedids, SQL_PARAMS_NAMED, 'selected');
         $selectionparams = ['selectedinstanceid' => $id] + $inparams;
-        $validrecords = $DB->get_records_select('block_custom_register_data',
-            "instanceid = :selectedinstanceid AND id {$insql}", $selectionparams, '', 'id');
+        $validrecords = $DB->get_records_select(
+            'block_custom_register_data',
+            "instanceid = :selectedinstanceid AND id {$insql}", $selectionparams, '', 'id'
+        );
         $selectedids = array_keys($validrecords);
 
         if (empty($selectedids)) {
-            redirect($returnurl, get_string('noselectedregisters', 'block_custom_register'), null,
-                \core\output\notification::NOTIFY_WARNING);
+            redirect(
+                $returnurl,
+                get_string('noselectedregisters', 'block_custom_register'),
+                null,
+                \core\output\notification::NOTIFY_WARNING
+            );
         }
 
         $confirmmessage = get_string('confirmdeleteselectedregisters', 'block_custom_register', count($selectedids));
@@ -93,10 +113,13 @@ if ($action === 'delete' || $action === 'deleteselected' || $action === 'deletea
             $DB->delete_records('block_custom_register_data', ['id' => $record->id, 'instanceid' => $id]);
             $message = get_string('registerdeleted', 'block_custom_register');
         } elseif ($action === 'deleteselected') {
-            list($insql, $inparams) = $DB->get_in_or_equal($selectedids, SQL_PARAMS_NAMED, 'selecteddelete');
+            [$insql, $inparams] = $DB->get_in_or_equal($selectedids, SQL_PARAMS_NAMED, 'selecteddelete');
             $deleteparams = ['selectedinstanceid' => $id] + $inparams;
-            $DB->delete_records_select('block_custom_register_data',
-                "instanceid = :selectedinstanceid AND id {$insql}", $deleteparams);
+            $DB->delete_records_select(
+                'block_custom_register_data',
+                "instanceid = :selectedinstanceid AND id {$insql}",
+                $deleteparams
+            );
             $message = get_string('selectedregistersdeleted', 'block_custom_register', count($selectedids));
         } else {
             $DB->delete_records('block_custom_register_data', ['instanceid' => $id]);
@@ -192,7 +215,6 @@ $rows = [];
 $exportrows = [];
 
 foreach ($records as $record) {
-
     if ($record->customdata === null) {
         $record->customdata = '{}';
     }
@@ -237,7 +259,6 @@ foreach ($records as $record) {
 
 // Only download data.
 if ($format) {
-
     switch ($format) {
         case 'csv' : usersgrades_download_csv($fields, $exportrows);
         case 'ods' : usersgrades_download_ods($fields, $exportrows);

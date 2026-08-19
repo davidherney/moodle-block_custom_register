@@ -20,12 +20,16 @@
     This template renders the template content area for a resource.
 
     Example context (json):
-    { blockid: string }
+    {
+        "blockid": "block_custom_register-1",
+        "content": "<p>Some content</p>",
+        "aftermessage": "<p>Some message</p>"
+    }
 }}
 
 <div id="{{blockid}}" class="customregister-box">
     <form autocomplete="off">
-    {{{content}}}
+        {{{content}}}
         <div class="col-12">
             <div data-control="errors-box" style="text-align: center;"></div>
             <button type="button" class="btn btn-primary btn-lg btn-block" data-action="save">{{#str}}save, block_custom_register{{/str}}</button>

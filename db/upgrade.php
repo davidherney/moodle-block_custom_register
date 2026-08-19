@@ -23,20 +23,17 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Upgrade code for the custom_register block.
  *
  * @param int $oldversion
  */
 function xmldb_block_custom_register_upgrade($oldversion) {
-    global $CFG, $DB;
+    global $DB;
 
     $dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
 
     if ($oldversion < 2020100604) {
-
         // Define index (not unique) to be added.
         $table = new xmldb_table('block_custom_register_data');
         $index = new xmldb_index('relation', XMLDB_INDEX_NOTUNIQUE, array('relation'));

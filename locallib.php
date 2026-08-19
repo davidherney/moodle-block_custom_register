@@ -31,7 +31,7 @@ function usersgrades_download_ods($fields, $data) {
     $workbook = new MoodleODSWorkbook('-');
     $workbook->send($filename);
 
-    $worksheet = array();
+    $worksheet = [];
 
     $worksheet[0] = $workbook->add_worksheet('');
     $col = 0;
@@ -68,7 +68,7 @@ function usersgrades_download_xls($fields, $data) {
     $workbook = new MoodleExcelWorkbook('-');
     $workbook->send($filename);
 
-    $worksheet = array();
+    $worksheet = [];
 
     $worksheet[0] = $workbook->add_worksheet('');
     $col = 0;
@@ -107,9 +107,7 @@ function usersgrades_download_csv($fields, $data) {
     $csvexport->add_data($fields);
 
     foreach ($data as $datarow) {
-        $row = array();
-
-        $onerow = array();
+        $onerow = [];
         foreach ($fields as $field => $unused) {
             if (property_exists($datarow, $field)) {
                 $onerow[] = $datarow->$field;

@@ -28,20 +28,26 @@ defined('MOODLE_INTERNAL') || die();
 require_once $CFG->libdir . '/externallib.php';
 
 class block_custom_register_external extends external_api {
-
     /**
      * To validade input parameters
      * @return external_function_parameters
      */
     public static function save_parameters() {
         return new external_function_parameters(
-            array(
+            [
                 'instanceid' => new external_value(PARAM_INT, 'Block instance id'),
                 'formdata' => new external_value(PARAM_TEXT, 'Form data to register'),
-            )
+            ]
         );
     }
 
+    /**
+     * Save the form data
+     *
+     * @param int $instanceid Block instance id
+     * @param string $formdata Form data to register
+     * @return array Message and success status
+     */
     public static function save($instanceid, $formdata) {
         global $DB, $USER;
 
@@ -49,7 +55,7 @@ class block_custom_register_external extends external_api {
         $res->message = '';
         $res->success = false;
 
-        $bi = $DB->get_record('block_instances', array('id' => $instanceid));
+        $bi = $DB->get_record('block_instances', ['id' => $instanceid]);
 
         if (!$bi) {
             $res->message = get_string('instancenotexist', 'block_custom_register');
@@ -88,7 +94,6 @@ class block_custom_register_external extends external_api {
         // Check if a relation is required.
         $relation = null;
         if (!empty($config->type) && !empty($config->joinfield)) {
-
             $joinfield = trim($config->joinfield);
 
             if (!property_exists($record, $joinfield) || empty($record->$joinfield)) {
@@ -102,7 +107,6 @@ class block_custom_register_external extends external_api {
             $exists = $DB->count_records('block_custom_register_join', $params);
 
             if ($exists == 0) {
-
                 if (!empty($config->joinmessage)) {
                     $message = str_replace('{value}', $record->$joinfield, $config->joinmessage);
                     $res->message = s($message);
@@ -121,7 +125,6 @@ class block_custom_register_external extends external_api {
 
         // Check if the uniqueness is required.
         if (!empty($config->ukfield)) {
-
             $ukfield = trim($config->ukfield);
             $type = trim($config->type);
 
@@ -166,10 +169,10 @@ class block_custom_register_external extends external_api {
      */
     public static function save_returns() {
         return new external_function_parameters(
-            array(
+            [
                 'message' => new external_value(PARAM_TEXT, 'Message to display'),
-                'success' => new external_value(PARAM_BOOL, 'True if all ok')
-            )
+                'success' => new external_value(PARAM_BOOL, 'True if all ok'),
+            ]
         );
     }
 }

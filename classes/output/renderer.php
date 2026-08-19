@@ -22,10 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace block_custom_register\output;
-defined('MOODLE_INTERNAL') || die;
 
 use plugin_renderer_base;
-use renderable;
 
 /**
  * custom_register block renderer
@@ -34,7 +32,6 @@ use renderable;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class renderer extends plugin_renderer_base {
-
     /**
      * Return the template content for the block.
      *

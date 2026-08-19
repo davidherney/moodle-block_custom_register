@@ -25,54 +25,46 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
-
-    'block/custom_register:myaddinstance' => array(
+$capabilities = [
+    'block/custom_register:myaddinstance' => [
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => array(
-            'manager' => CAP_ALLOW
-        ),
+        'archetypes' => [
+            'manager' => CAP_ALLOW,
+        ],
+        'clonepermissionsfrom' => 'moodle/my:manageblocks',
+    ],
 
-        'clonepermissionsfrom' => 'moodle/my:manageblocks'
-    ),
-
-    'block/custom_register:addinstance' => array(
+    'block/custom_register:addinstance' => [
         'riskbitmask' => RISK_SPAM | RISK_XSS,
-
         'captype' => 'write',
         'contextlevel' => CONTEXT_BLOCK,
-        'archetypes' => array(
+        'archetypes' => [
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        ),
+            'manager' => CAP_ALLOW,
+        ],
+        'clonepermissionsfrom' => 'moodle/site:manageblocks',
+    ],
 
-        'clonepermissionsfrom' => 'moodle/site:manageblocks'
-    ),
-
-    'block/custom_register:viewreport' => array(
+    'block/custom_register:viewreport' => [
         'riskbitmask' => RISK_PERSONAL,
-
         'captype' => 'read',
         'contextlevel' => CONTEXT_BLOCK,
-        'archetypes' => array(
+        'archetypes' => [
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        ),
+            'manager' => CAP_ALLOW,
+        ],
+        'clonepermissionsfrom' => 'moodle/site:manageblocks',
+    ],
 
-        'clonepermissionsfrom' => 'moodle/site:manageblocks'
-    ),
-
-    'block/custom_register:deleteregisters' => array(
+    'block/custom_register:deleteregisters' => [
         'riskbitmask' => RISK_DATALOSS | RISK_PERSONAL,
-
         'captype' => 'write',
         'contextlevel' => CONTEXT_BLOCK,
-        'archetypes' => array(
+        'archetypes' => [
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        ),
-
-        'clonepermissionsfrom' => 'moodle/site:manageblocks'
-    )
-);
+            'manager' => CAP_ALLOW,
+        ],
+        'clonepermissionsfrom' => 'moodle/site:manageblocks',
+    ]
+];

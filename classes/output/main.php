@@ -22,7 +22,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace block_custom_register\output;
-defined('MOODLE_INTERNAL') || die();
 
 use renderable;
 use renderer_base;
@@ -35,7 +34,6 @@ use templatable;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class main implements renderable, templatable {
-
     /**
      * Block instance configuration.
      * @var object
@@ -68,7 +66,7 @@ class main implements renderable, templatable {
         $PAGE->requires->string_for_js('bademail', 'block_custom_register');
         $PAGE->requires->string_for_js('fieldrequired', 'block_custom_register');
 
-        $filteropt = new \stdClass;
+        $filteropt = new \stdClass();
         $filteropt->overflowdiv = true;
         $filteropt->noclean = true;
 
@@ -78,13 +76,20 @@ class main implements renderable, templatable {
         }
 
         $content = $this->instanceconfig->content;
-        // rewrite url
-        $content = file_rewrite_pluginfile_urls($content, 'pluginfile.php',
-                                                $this->context->id, 'block_custom_register', 'content', NULL);
+        // Rewrite url.
+        $content = file_rewrite_pluginfile_urls(
+            $content,
+            'pluginfile.php',
+            $this->context->id,
+            'block_custom_register',
+            'content',
+            null
+        );
+
         // Default to FORMAT_HTML which is what will have been used before the
         // editor was properly implemented for the block.
         $format = FORMAT_HTML;
-        // Check to see if the format has been properly set on the config
+        // Check to see if the format has been properly set on the config.
         if (isset($this->instanceconfig->format)) {
             $format = $this->instanceconfig->format;
         }
@@ -94,10 +99,10 @@ class main implements renderable, templatable {
             'loadingimg' => $OUTPUT->pix_icon('i/loading', get_string('loadinghelp')),
             'blockid' => $id,
             'content' => $content,
-            'aftermessage' => $aftermessage
+            'aftermessage' => $aftermessage,
         ];
 
-        $PAGE->requires->js_call_amd('block_custom_register/main', 'init', array($id, $this->instance->id));
+        $PAGE->requires->js_call_amd('block_custom_register/main', 'init', [$id, $this->instance->id]);
 
         return $defaultvariables;
     }

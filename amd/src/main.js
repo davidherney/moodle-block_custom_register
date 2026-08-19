@@ -16,7 +16,7 @@
 /**
  * Javascript to initialise the block.
  *
- * @package   block_custom_register
+ * @module    block_custom_register/main
  * @copyright 2020 David Herney @ BambuCo
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -24,13 +24,16 @@
 define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', 'core/ajax'],
         function($, ModalFactory, Templates, Notification, Ajax) {
 
-    var wwwroot = M.cfg.wwwroot;
-
+    /**
+     *
+     * @param {object} $form
+     * @returns
+     */
     function get_form_data($form){
         var unindexed_array = $form.serializeArray();
         var indexed_array = {};
 
-        $.map(unindexed_array, function(n, i){
+        $.map(unindexed_array, function(n){
             indexed_array[n['name']] = n['value'];
         });
 
@@ -40,9 +43,10 @@ define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', '
     /**
      * Initialise all for the block.
      *
+     * @param {string} id The block id.
+     * @param {string} instanceid The block instance id.
      */
     var init = function (id, instanceid) {
-
         var $block = $('#' + id);
 
         $block.find('input').each(function() {
@@ -94,8 +98,6 @@ define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', '
                 methodname: 'block_custom_register_save',
                 args: { 'instanceid': parseInt(instanceid), 'formdata': formdata },
                 done: function (data) {
-
-                    var aftermessage;
                     if (data.success) {
                         $form.empty();
                         if ($message.text() == '') {
@@ -108,7 +110,6 @@ define(['jquery', 'core/modal_factory', 'core/templates', 'core/notification', '
                 },
                 fail: function (e) {
                     Notification.exception(e);
-                    console.log(e);
                 }
             }]);
         });

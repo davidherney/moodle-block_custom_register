@@ -22,7 +22,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace block_custom_register\output;
-defined('MOODLE_INTERNAL') || die();
 
 use renderable;
 use renderer_base;
@@ -35,7 +34,6 @@ use templatable;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class report implements renderable, templatable {
-
     /**
      * Block instance configuration.
      * @var object
@@ -106,8 +104,16 @@ class report implements renderable, templatable {
      * @param bool $candelete Whether the current user can delete records
      * @param string $pagingbar Rendered paging bar HTML
      */
-    public function __construct($id, $courseid, $records = [], $fields = [], $query = '', $total = 0,
-                                $candelete = false, $pagingbar = '') {
+    public function __construct(
+        $id,
+        $courseid,
+        $records = [],
+        $fields = [],
+        $query = '',
+        $total = 0,
+        $candelete = false,
+        $pagingbar = ''
+    ) {
         $this->records = $records;
         $this->query = $query;
         $this->fields = $fields;
@@ -116,7 +122,6 @@ class report implements renderable, templatable {
         $this->courseid = $courseid;
         $this->candelete = $candelete;
         $this->pagingbar = $pagingbar;
-
     }
 
     /**
